@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <link rel="icon" href="image/Untitled design.png" type="image/x-icon">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .timer-container {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        .timer-container h2 {
+            font-size: 2em;
+            color: #1e3c72;
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .input-container input {
+            width: 60px;
+            padding: 10px;
+            margin: 0 5px;
+            border: 2px solid #1e3c72;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .button-container {
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px 5px;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            transition: background 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background: linear-gradient(45deg, #2a5298, #1e3c72);
+        }
+
+        .circle-timer {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: conic-gradient(#2a5298 0% 100%, transparent 0% 100%);
+        }
+
+        .circle-timer .time {
+            font-size: 2em;
+            color: #1e3c72;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="timer-container">
+        <h2>Countdown Timer</h2>
+        <div class="input-container">
+            <input type="number" id="hours" placeholder="HH" min="0">
+            <input type="number" id="minutes" placeholder="MM" min="0">
+            <input type="number" id="seconds" placeholder="SS" min="0">
+        </div>
+        <div class="button-container">
+            <button id="start-timer">Start</button>
+            <button id="reset-timer">Reset</button>
+        </div>
+        <div class="circle-timer" id="circle-timer">
+            <div class="time" id="countdown-display">00:00:00</div>
+        </div>
+        <div class="button-container">
+            <button id="stop-alarm" style="display:none;">Stop Alarm</button>
+        </div>
+    </div>
+    <audio id="alarm-audio" src=" "></audio> <!-- Set your MP3 file path here -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const startButton = document.getElementById('start-timer');
+            const resetButton = document.getElementById('reset-timer');
+            const stopAlarmButton = document.getElementById('stop-alarm');
+            const countdownDisplay = document.getElementById('countdown-display');
+            const circleTimer = document.getElementById('circle-timer');
+            const alarmAudio = document.getElementById('alarm-audio');
+            const hoursInput = document.getElementById('hours');
+            const minutesInput = document.getElementById('minutes');
+            const secondsInput = document.getElementById('seconds');
+            let timerInterval;
+
+            const startTimer = () => {
+                const hours = parseInt(hoursInput.value) || 0;
+                const minutes = parseInt(minutesInput.value) || 0;
+                const seconds = parseInt(secondsInput.value) || 0;
+                let totalTime = hours * 3600 + minutes * 60 + seconds;
+
+                if (totalTime <= 0) {
+                    return;
+                }
+
+                clearInterval(timerInterval);
+                updateCircle(totalTime, totalTime);
+
+                timerInterval = setInterval(() => {
+                    totalTime--;
+
+                    const displayHours = String(Math.floor(totalTime / 3600)).padStart(2, '0');
+                    const displayMinutes = String(Math.floor((totalTime % 3600) / 60)).padStart(2, '0');
+                    const displaySeconds = String(totalTime % 60).padStart(2, '0');
+
+                    countdownDisplay.textContent = `${displayHours}:${displayMinutes}:${displaySeconds}`;
+                    updateCircle(totalTime, hours * 3600 + minutes * 60 + seconds);
+
+                    if (totalTime <= 0) {
+                        clearInterval(timerInterval);
+                        countdownDisplay.textContent = '00:00:00';
+                        circleTimer.style.background = 'none';
+                        playAlarm();
+                    }
+                }, 1000);
+            };
+
+            const updateCircle = (remainingTime, totalTime) => {
+                const percentage = (remainingTime / totalTime) * 100;
+                circleTimer.style.background = `conic-gradient(#2a5298 ${percentage}%, transparent ${percentage}%)`;
+            };
+
+            const playAlarm = () => {
+                alarmAudio.play();
+                stopAlarmButton.style.display = 'inline-block';
+            };
+
+            const stopAlarm = () => {
+                alarmAudio.pause();
+                alarmAudio.currentTime = 0;
+                stopAlarmButton.style.display = 'none';
+            };
+
+            const resetTimer = () => {
+                clearInterval(timerInterval);
+                countdownDisplay.textContent = '00:00:00';
+                circleTimer.style.background = 'conic-gradient(#2a5298 0% 100%, transparent 0% 100%)';
+                hoursInput.value = '';
+                minutesInput.value = '';
+                secondsInput.value = '';
+                stopAlarm();
+            };
+
+            startButton.addEventListener('click', startTimer);
+            resetButton.addEventListener('click', resetTimer);
+            stopAlarmButton.addEventListener('click', stopAlarm);
+
+            hoursInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    startButton.click();
+                }
+            });
+
+            minutesInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    startButton.click();
+                }
+            });
+
+            secondsInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    startButton.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

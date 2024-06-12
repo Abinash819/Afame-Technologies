@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuoteGenerates</title>
+    <link rel="icon" href="image/Untitled design.png" type="image/x-icon">
+
+    <style>
+
+    
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #ff8008, #ffc837);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .quote-container {
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        text-align: center;
+        max-width: 500px;
+        width: 100%;
+        margin: 20px;
+    }
+
+    .quote-container h2 {
+        font-size: 2em;
+        color: #ff8008;
+        background: linear-gradient(45deg, #ff8008, #ffc837);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    #generate-quote {
+        background: linear-gradient(45deg, #ff8008, #ffc837);
+        border: none;
+        border-radius: 25px;
+        color: white;
+        cursor: pointer;
+        font-size: 1em;
+        margin: 10px 0;
+        padding: 15px 30px;
+        text-transform: uppercase;
+        transition: background 0.3s ease;
+    }
+
+    #generate-quote:hover {
+        background: linear-gradient(45deg, #ffc837, #ff8008);
+    }
+
+    #quote-display {
+        font-size: 1.2em;
+        margin-top: 20px;
+        background: linear-gradient(45deg, #ff8008, #ffc837);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .big-quote {
+        font-size: 2em;
+        margin-top: 40px;
+    }
+</style>
+</head>
+<body>
+    <div class="quote-container">
+        <h2>Random Quote Generator</h2>
+        <button id="generate-quote">Generate Quote</button>
+        <p id="quote-display" class="big-quote"></p>
+    </div>
+</body>
+<script>
+    const quotes = [
+        "The best way to predict the future is to invent it.",
+        "Life is 10% what happens to us and 90% how we react to it.",
+        "Your time is limited, don't waste it living someone else's life.",
+        "The only limit to our realization of tomorrow is our doubts of today.",
+        "The purpose of our lives is to be happy.",
+        "Believe in yourself and all that you are. Know that there is something inside you that is greater than any obstacle.",
+        "The only way to achieve the impossible is to believe it is possible.",
+        "Success is not the key to happiness. Happiness is the key to success.",
+        "Your limitation—it's only your imagination.",
+        "Push yourself, because no one else is going to do it for you.",
+        "Great things never come from comfort zones.",
+        "Dream it. Wish it. Do it.",
+        "Success doesn’t just find you. You have to go out and get it.",
+        "The harder you work for something, the greater you’ll feel when you achieve it.",
+        "Don’t stop when you’re tired. Stop when you’re done.",
+        "Wake up with determination. Go to bed with satisfaction.",
+        "Do something today that your future self will thank you for.",
+        "Little things make big days.",
+        "It’s going to be hard, but hard does not mean impossible.",
+        "Don’t wait for opportunity. Create it.",
+        "Sometimes we’re tested not to show our weaknesses, but to discover our strengths.",
+        "The key to success is to focus on goals, not obstacles.",
+        "Dream bigger. Do bigger.",
+        "You are capable of amazing things.",
+        "Don’t limit your challenges. Challenge your limits."
+    ];
+
+    document.getElementById('generate-quote').addEventListener('click', function() {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        const randomQuote = quotes[randomIndex];
+        document.getElementById('quote-display').textContent = randomQuote;
+    });
+</script>
+</html>

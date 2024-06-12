@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ImageSlider</title>
+    <link rel="icon" href="image/Untitled design.png" type="image/x-icon">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #29a19c, #a7c957);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+
+        .background-blur {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            filter: blur(20px);
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .slider-container {
+            width: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slider {
+            display: flex;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .slider img {
+            width: 100%;
+            display: none;
+        }
+
+        .slider img.active {
+            display: block;
+        }
+
+        button {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            z-index: 1;
+        }
+
+        #prev {
+            left: 10px;
+        }
+
+        #next {
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-blur" id="background-blur"></div>
+    <div class="slider-container">
+        <button id="prev">Prev</button>
+        <div class="slider">
+            <img src="https://images.unsplash.com/photo-1465742635216-bf22c6728f8d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8anVtZ2xlfGVufDB8fDB8fHww" alt="Image 1">
+            <img src="https://media.istockphoto.com/id/2114024734/photo/animals-walking-beside-calm-river-during-full-moon-nightscape.webp?b=1&s=170667a&w=0&k=20&c=ObgThAUIwsY5o7lclbJQNEkIFXKGMoMUtKIDS07YlUs=" alt="Image 2">
+            <img src="https://images.unsplash.com/photo-1530178845754-5701e2cacd88?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8anVtZ2xlfGVufDB8fDB8fHww" alt="Image 3">
+            <img src="https://images.unsplash.com/photo-1476988552461-c1cb135cd48b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8anVtZ2xlfGVufDB8fDB8fHww" alt="Image 4">
+            <img src="https://media.istockphoto.com/id/689398912/photo/elephants-in-jungle.webp?b=1&s=170667a&w=0&k=20&c=odDwlMFiqArvMmlhcqXGLJu7Aii0jsW6VXaXn2tKK_U=" alt="Image 5">
+            <img src="https://media.istockphoto.com/id/1266552048/photo/forest-fire-wildfire-at-night-time-on-the-mountain-with-big-smoke.webp?b=1&s=170667a&w=0&k=20&c=bOuIJr60s5a7psF4OcA6lv6niGg9EsP-KdQqS1O8VcU=" alt="Image 6">
+        </div>
+        <button id="next">Next</button>
+    </div>
+    <script>
+        let currentIndex = 0;
+        const images = document.querySelectorAll('.slider img');
+        const backgroundBlur = document.getElementById('background-blur');
+
+        const updateBackground = () => {
+            backgroundBlur.style.backgroundImage = `url(${images[currentIndex].src})`;
+        };
+
+        document.getElementById('prev').addEventListener('click', () => {
+            images[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            images[currentIndex].classList.add('active');
+            updateBackground();
+        });
+
+        document.getElementById('next').addEventListener('click', () => {
+            images[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % images.length;
+            images[currentIndex].classList.add('active');
+            updateBackground();
+        });
+
+        // Initialize the first image as active and set background
+        images[currentIndex].classList.add('active');
+        updateBackground();
+    </script>
+</body>
+</html>
